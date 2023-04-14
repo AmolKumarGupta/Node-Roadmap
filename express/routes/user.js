@@ -1,14 +1,9 @@
 const express = require("express");
 const path = require("path");
-
+const UserController = require('../controllers/UserController');
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'index.html'));
-});
-
-router.get('/profile', (req, res, next) => {
-    res.send('profile page');
-});
+router.get('/', UserController.get);
+router.get('/profile', UserController.profile);
 
 module.exports = router;
