@@ -25,7 +25,7 @@ class ApiUserController {
             });
         }
 
-        const user = new ApiUser({name: req.body.name, email: req.body.email});
+        const user = new ApiUser({ ...req.body });
         user.save().then(() => {
             res.json({
                 status: 200,
@@ -36,6 +36,50 @@ class ApiUserController {
                 status: 500,
                 err
             })
+        });
+    }
+
+    static update(req, res) {
+        if (!req.params.id) {
+            return res.status(400).json({
+                status: 400,
+                err: "id is required"
+            });
+        }
+
+        const user = new ApiUser({...req.body, _id: req.params.id});
+        user.update().then(result => {
+            return res.json({
+                status: 200,
+                result
+            });
+        }).catch(err => {
+            return res.status(500).json({
+                status: 500,
+                err
+            });
+        });
+    }
+
+    static delete(req, res) {
+        if (! req.params.id) {
+            return res.status(400).json({
+                status: 400,
+                err: "id is required"
+            });
+        }
+
+        ApiUser.delete(req.params.id)
+        .then(result => {
+            return res.json({
+                status: 200,
+                result
+            });
+        }).catch(err => {
+            return res.status(500).json({
+                status: 500,
+                err: err
+            });
         });
     }
 }
