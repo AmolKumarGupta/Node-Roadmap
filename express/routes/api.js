@@ -8,5 +8,7 @@ router.get("/", (req, res, next) => {
 
 router.get("/users", ApiUserController.get);
 router.post("/users", ApiUserController.save);
+router.post("/users/:id", ApiUserController.update);
+router.delete("/users/:id", ApiUserController.delete);
 
 module.exports = router;
