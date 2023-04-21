@@ -1,6 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("node:path");
+const { default: mongoose } = require("mongoose");
+const { uri } = require("./dbconfig");
 
 const app = express();
 app.set("view engine", "ejs");
@@ -13,4 +15,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use((req, res) => {
   res.send("<h1>Hello</h1>");
 });
-app.listen(8080);
+
+mongoose.connect(uri).then(() => {
+  app.listen(8080);
+});
