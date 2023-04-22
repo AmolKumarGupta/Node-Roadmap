@@ -1,7 +1,9 @@
 class AuthController {
   static login(req, res) {
-    res.send("login page");
+    res.render("login");
   }
+
+  static register(req, res) {}
 }
 
 module.exports = AuthController;

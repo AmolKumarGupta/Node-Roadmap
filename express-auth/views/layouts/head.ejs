@@ -26,5 +26,7 @@
   </head>
   <!-- prettier-ignore -->
   <body>
-    <%- include('header') -%>
-    <%- include('sidebar') -%>
+    <% if(typeof isAuth !== "undefined" && isAuth) { %>
+      <%- include('header') -%>
+      <%- include('sidebar') -%>
+    <%  } %>
