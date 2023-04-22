@@ -5,7 +5,10 @@ const { default: mongoose } = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const flash = require("req-flash");
+
 const { uri } = require("./dbconfig");
+const { authCheck } = require("./middleware/auth");
+const AuthController = require("./controllers/AuthController");
 
 const app = express();
 app.set("view engine", "ejs");
@@ -23,6 +26,10 @@ app.use(
   })
 );
 app.use(flash());
+
+app.get("/login", AuthController.login);
+
+app.use(authCheck);
 
 app.use((req, res) => {
   res.render("errors/404");
