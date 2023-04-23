@@ -29,7 +29,10 @@ app.use(
 app.use(flash());
 
 app.get("/login", AuthController.login);
+app.post("/login", AuthController.postLogin);
 app.get("/register", AuthController.register);
+app.post("/register", AuthController.postRegister);
+app.get("/logout", AuthController.logout);
 app.use("/", authCheck, authRoute);
 
 app.use((req, res) => {
