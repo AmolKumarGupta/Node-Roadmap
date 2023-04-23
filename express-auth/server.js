@@ -8,6 +8,7 @@ const flash = require("req-flash");
 
 const { uri } = require("./dbconfig");
 const { authCheck } = require("./middleware/auth");
+const authRoute = require("./routes/auth");
 const AuthController = require("./controllers/AuthController");
 
 const app = express();
@@ -25,11 +26,14 @@ app.use(
     store: MongoStore.create({ mongoUrl: uri }),
   })
 );
-app.use(flash());
+app.use(flash({ locals: "flash" }));
 
 app.get("/login", AuthController.login);
-
-app.use(authCheck);
+app.post("/login", AuthController.postLogin);
+app.get("/register", AuthController.register);
+app.post("/register", AuthController.postRegister);
+app.get("/logout", AuthController.logout);
+app.use("/", authCheck, authRoute);
 
 app.use((req, res) => {
   res.render("errors/404");
