@@ -8,6 +8,7 @@ const flash = require("req-flash");
 
 const { uri } = require("./dbconfig");
 const { authCheck } = require("./middleware/auth");
+const authRoute = require("./routes/auth");
 const AuthController = require("./controllers/AuthController");
 
 const app = express();
@@ -28,8 +29,8 @@ app.use(
 app.use(flash());
 
 app.get("/login", AuthController.login);
-
-app.use(authCheck);
+app.get("/register", AuthController.register);
+app.use("/", authCheck, authRoute);
 
 app.use((req, res) => {
   res.render("errors/404");
