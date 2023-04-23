@@ -7,10 +7,12 @@ const UserSchema = new Schema({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
@@ -44,9 +46,9 @@ UserSchema.pre("save", function (next) {
 UserSchema.methods.comparePassword = function (password, callback) {
   bcrypt.compare(password, this.password, function (err, isMatch) {
     if (err) {
-      return callback(err);
+      return callback(err, null);
     }
-    return callback(isMatch);
+    return callback(null, isMatch);
   });
 };
 

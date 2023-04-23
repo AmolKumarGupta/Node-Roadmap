@@ -5,7 +5,38 @@ class AuthController {
     res.render("login");
   }
 
-  static postLogin(req, res) {}
+  static postLogin(req, res) {
+    if (!req.body?.name || !req.body?.password) {
+      return res.redirect("/login");
+    }
+
+    User.findOne({
+      name: req.body.name,
+    })
+      .exec()
+      .then((doc) => {
+        if (!doc) {
+          return res.redirect("/login");
+        }
+
+        doc.comparePassword(req.body.password, (err, isMatch) => {
+          if (err) {
+            return res.redirect("/login");
+          }
+          if (isMatch == false) {
+            return res.redirect("/login");
+          }
+
+          req.session.isAuth = true;
+          req.session.user = doc;
+          return res.redirect("/");
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        return res.redirect("/login");
+      });
+  }
 
   static register(req, res) {
     res.render("register");
