@@ -26,7 +26,7 @@ app.use(
     store: MongoStore.create({ mongoUrl: uri }),
   })
 );
-app.use(flash());
+app.use(flash({ locals: "flash" }));
 
 app.get("/login", AuthController.login);
 app.post("/login", AuthController.postLogin);

@@ -7,6 +7,10 @@ class AuthController {
 
   static postLogin(req, res) {
     if (!req.body?.name || !req.body?.password) {
+      req.flash("alert", {
+        label: "danger",
+        msg: "Invalid inputs!",
+      });
       return res.redirect("/login");
     }
 
@@ -16,14 +20,27 @@ class AuthController {
       .exec()
       .then((doc) => {
         if (!doc) {
+          req.flash("alert", {
+            label: "danger",
+            msg: "User not found!",
+          });
           return res.redirect("/login");
         }
 
         doc.comparePassword(req.body.password, (err, isMatch) => {
           if (err) {
+            console.log(err);
+            req.flash("alert", {
+              label: "danger",
+              msg: "Something went wrong!",
+            });
             return res.redirect("/login");
           }
           if (isMatch == false) {
+            req.flash("alert", {
+              label: "warning",
+              msg: "Incorrect password!",
+            });
             return res.redirect("/login");
           }
 
@@ -34,6 +51,10 @@ class AuthController {
       })
       .catch((err) => {
         console.log(err);
+        req.flash("alert", {
+          label: "danger",
+          msg: "Something went wrong!",
+        });
         return res.redirect("/login");
       });
   }

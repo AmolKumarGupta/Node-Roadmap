@@ -32,6 +32,11 @@
                 </div>
 
                 <form action="/login" method="post" class="row g-3 needs-validation" novalidate>
+                  <% if (flash?.alert) { %>
+                  <div class="col-12">
+                    <div class="alert alert-<%- flash.alert.label -%> mb-0 text-center"><%- flash.alert.msg -%></div>
+                  </div>
+                  <% } %>
                   <div class="col-12">
                     <label for="yourUsername" class="form-label"
                       >Username</label
