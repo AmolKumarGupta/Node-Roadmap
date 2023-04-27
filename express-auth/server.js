@@ -5,6 +5,9 @@ const { default: mongoose } = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const flash = require("req-flash");
+const mySchema = require("./graphql/schema");
+const resolver = require("./graphql/resolver");
+const { createHandler } = require("graphql-http/lib/use/express");
 
 const { uri } = require("./dbconfig");
 const { authCheck } = require("./middleware/auth");
@@ -27,6 +30,11 @@ app.use(
   })
 );
 app.use(flash({ locals: "flash" }));
+
+app.use(
+  "/graphql",
+  createHandler({ schema: mySchema, rootValue: resolver, graphiql: true })
+);
 
 app.get("/login", AuthController.login);
 app.post("/login", AuthController.postLogin);
